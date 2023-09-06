@@ -1,0 +1,17 @@
+{
+    "name": "microphp/workerman",
+    "autoload": {
+        "psr-4": {
+            "Microphp\\Workerman\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "liutao",
+            "email": "gg.cn.lt@gmail.com"
+        }
+    ],
+    "require": {
+        "workerman/workerman": ">=4"
+    }
+}
