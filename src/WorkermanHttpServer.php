@@ -51,7 +51,7 @@ class WorkermanHttpServer implements HttpServerInterface
         if (empty($enableWorkermanLog) && $this->isLinux()) {
             Worker::$logFile = '/dev/null';
         }
-        Worker::$pidFile = 'runtime/' . uniqid('workerman_', true) . '.pid';
+        Worker::$pidFile = 'runtime/' . uniqid('microphp_', true) . '.pid';
     }
 
     private function isLinux(): bool
