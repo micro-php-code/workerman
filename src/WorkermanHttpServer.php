@@ -11,7 +11,9 @@ use MicroPHP\Framework\Http\Contract\HttpServerInterface;
 use MicroPHP\Framework\Http\ServerConfig;
 use MicroPHP\Framework\Http\Traits\HttpServerTrait;
 use MicroPHP\Framework\Router\Router;
+use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Connection\TcpConnection;
+use Workerman\Events\Fiber;
 use Workerman\Protocols\Http\Request;
 use Workerman\Psr7\Response;
 use Workerman\Psr7\ServerRequest;
@@ -21,7 +23,7 @@ class WorkermanHttpServer implements HttpServerInterface
 {
     use HttpServerTrait;
 
-    public function run(Router $router): void
+    public function run(Router $router, OutputInterface $output): void
     {
         $this->setRuntime();
         $strategy = new ApplicationStrategy();
@@ -30,16 +32,9 @@ class WorkermanHttpServer implements HttpServerInterface
         $serverConfig = new ServerConfig();
 
         $httpWorker = new Worker($serverConfig->getUri(true));
-
+        $config = Config::get('workerman', []);
         $httpWorker->count = $serverConfig->getWorkers();
-
-        $httpWorker->onMessage = function (TcpConnection $connection, Request $request) use ($router) {
-            $psr7Request = new ServerRequest($request->rawBuffer());
-
-            $response = $this->routeDispatch($router, \MicroPHP\Framework\Http\ServerRequest::fromPsr7($psr7Request));
-            $connection->send(new Response($response->getStatusCode(), $response->getHeaders(), $response->getBody(), $response->getProtocolVersion(), $response->getReasonPhrase()));
-        };
-
+        $config['callback']($httpWorker, $router, $output);
         Worker::runAll();
     }
 
