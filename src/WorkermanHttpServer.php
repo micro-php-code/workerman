@@ -12,11 +12,6 @@ use MicroPHP\Framework\Http\ServerConfig;
 use MicroPHP\Framework\Http\Traits\HttpServerTrait;
 use MicroPHP\Framework\Router\Router;
 use Symfony\Component\Console\Output\OutputInterface;
-use Workerman\Connection\TcpConnection;
-use Workerman\Events\Fiber;
-use Workerman\Protocols\Http\Request;
-use Workerman\Psr7\Response;
-use Workerman\Psr7\ServerRequest;
 use Workerman\Worker;
 
 class WorkermanHttpServer implements HttpServerInterface
