@@ -21,9 +21,6 @@ class WorkermanHttpServer implements HttpServerInterface
     public function run(Router $router, OutputInterface $output): void
     {
         $this->setRuntime();
-        $strategy = new ApplicationStrategy();
-        $strategy->setContainer(Application::getContainer());
-        $router->setStrategy($strategy);
         $serverConfig = new ServerConfig();
 
         $httpWorker = new Worker($serverConfig->getUri(true));
