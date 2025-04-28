@@ -33,9 +33,7 @@ class WorkermanHttpServer implements HttpServerInterface
     private function setRuntime(): void
     {
         $this->createRuntimeDir();
-        $enableWorkermanLog = Config::get('log.enable_workerman_log');
-        Worker::$logFile = base_path('runtime/logs/workerman.log');
-        if (empty($enableWorkermanLog) && $this->isLinux()) {
+        if ($this->isLinux()) {
             Worker::$logFile = '/dev/null';
         }
         Worker::$pidFile = 'runtime/' . uniqid('microphp_', true) . '.pid';
