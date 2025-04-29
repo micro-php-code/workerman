@@ -8,7 +8,6 @@ use MicroPHP\Framework\Application;
 use MicroPHP\Framework\Database\CycleORM;
 use MicroPHP\Framework\Router\Router;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Psr7\Response;
@@ -29,7 +28,7 @@ if (! function_exists('route_dispatch')) {
 }
 
 return [
-    'callback' => static function (Worker $httpWorker, Router $router, OutputInterface $output) {
+    'callback' => static function (Worker $httpWorker, Router $router) {
         $httpWorker->eventLoop = Fiber::class;
         $httpWorker->onMessage = function (TcpConnection $connection, Request $request) use ($router) {
             try {

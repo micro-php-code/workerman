@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace MicroPHP\Workerman;
 
-use League\Route\Strategy\ApplicationStrategy;
-use MicroPHP\Framework\Application;
 use MicroPHP\Framework\Config\Config;
 use MicroPHP\Framework\Http\Contract\HttpServerInterface;
 use MicroPHP\Framework\Http\ServerConfig;
 use MicroPHP\Framework\Http\Traits\HttpServerTrait;
 use MicroPHP\Framework\Router\Router;
-use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Worker;
 
 class WorkermanHttpServer implements HttpServerInterface
 {
     use HttpServerTrait;
 
-    public function run(Router $router, OutputInterface $output): void
+    public function run(Router $router): void
     {
         $this->setRuntime();
         $serverConfig = new ServerConfig();
@@ -26,7 +23,7 @@ class WorkermanHttpServer implements HttpServerInterface
         $httpWorker = new Worker($serverConfig->getUri(true));
         $config = Config::get('workerman', []);
         $httpWorker->count = $serverConfig->getWorkers();
-        $config['callback']($httpWorker, $router, $output);
+        $config['callback']($httpWorker, $router);
         Worker::runAll();
     }
 
